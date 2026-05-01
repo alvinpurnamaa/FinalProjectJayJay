@@ -24,7 +24,7 @@ public class webStepdef {
         inventoryPage = new homePage(driver);
     }
 
-    @Given("user open login page")
+    @Given("user open the login page")
     public void openLoginPage() {
         loginPage.openPage();
     }
