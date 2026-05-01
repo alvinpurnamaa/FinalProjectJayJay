@@ -1,0 +1,76 @@
+plugins {
+    id 'java'
+    id 'io.qameta.allure' version '2.11.2'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation("org.seleniumhq.selenium:selenium-java:4.40.0")
+
+    implementation("io.github.bonigarcia:webdrivermanager:6.3.3")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.2")
+
+    testImplementation 'org.junit.platform:junit-platform-suite:1.10.2'
+
+    testImplementation 'io.rest-assured:rest-assured:5.4.0'
+    testImplementation 'io.rest-assured:json-path:5.4.0'
+
+    testImplementation 'io.cucumber:cucumber-java:7.34.2'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.34.2'
+
+    testImplementation 'io.qameta.allure:allure-junit5:2.24.0'
+    testImplementation 'io.qameta.allure:allure-cucumber7-jvm:2.24.0'
+}
+
+test {
+    useJUnitPlatform()
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task apiTest(type: Test) {
+    useJUnitPlatform()
+
+    description = "Run API tests with tag @api"
+    group = "verification"
+
+    include '**/apiRunner.class'
+
+    systemProperty "cucumber.filter.tags", "@api"
+    systemProperty "cucumber.plugin",
+            "pretty, html:reports/api-report.html, json:reports/api-report.json"
+
+    systemProperty "headless", "true"
+}
+
+task webTest(type: Test) {
+    useJUnitPlatform()
+
+    description = "Run Web UI tests with tag @web"
+    group = "verification"
+
+    include '**/webRunner.class'
+
+    systemProperty "cucumber.filter.tags", "@web"
+    systemProperty "cucumber.plugin",
+            "pretty, html:reports/web-report.html, json:reports/web-report.json"
+
+    systemProperty "headless", "true"
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
