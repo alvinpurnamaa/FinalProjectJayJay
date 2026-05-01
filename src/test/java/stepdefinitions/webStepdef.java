@@ -1,31 +1,3 @@
-//package stepdefinitions;
-//
-//import io.cucumber.java.en.*;
-//import org.openqa.selenium.WebDriver;
-//import pages.loginPage;
-//import utils.driverFactory;
-//
-//public class webStepdef {
-//
-//    WebDriver driver = driverFactory.getDriver();
-//    loginPage loginPage = new loginPage(driver);
-//
-//    @Given("when user open login page")
-//    public void openLoginPage() {
-//        driver.get("https://www.saucedemo.com/");
-//    }
-//
-//    @When("user login with username {string} and password {string}")
-//    public void login(String username, String password) {
-//        loginPage.login(username, password);
-//    }
-//
-//    @Then("user should redirect to homepage")
-//    public void validateHome() {
-//        assert loginPage.isHomeDisplayed();
-//    }
-//}
-
 package stepdefinitions;
 
 import io.cucumber.java.en.*;
@@ -82,7 +54,6 @@ public class webStepdef {
         assertTrue(actualMsg.contains(expectedMsg));
     }
 
-    // ✅ cleanup setelah scenario
     @After
     public void tearDown() {
         driverFactory.quitDriver();

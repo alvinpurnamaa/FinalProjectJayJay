@@ -1,12 +1,4 @@
 @web
-#Feature: Login Test
-#
-#  Scenario: Login with valid user
-#    Given when user open login page
-#    When user login with username "standard_user" and password "secret_sauce"
-#    Then user should redirect to homepage
-
-
 Feature: Login sauce demo
 
   Scenario: when user login with valid username and password
