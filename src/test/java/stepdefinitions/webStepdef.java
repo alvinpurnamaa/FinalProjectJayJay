@@ -1,6 +1,7 @@
 package stepdefinitions;
 
 import io.cucumber.java.en.*;
+import io.cucumber.java.Before;
 import io.cucumber.java.After;
 
 import org.openqa.selenium.WebDriver;
@@ -12,11 +13,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class webStepdef {
 
-    WebDriver driver = driverFactory.getDriver();
-    loginPage loginPage = new loginPage(driver);
-    homePage inventoryPage = new homePage(driver);
+    WebDriver driver;
+    loginPage loginPage;
+    homePage inventoryPage;
 
-    @Given("user open the login page")
+    @Before("@web")
+    public void setUp() {
+        driver = driverFactory.getDriver();
+        loginPage = new loginPage(driver);
+        inventoryPage = new homePage(driver);
+    }
+
+    @Given("user open login page")
     public void openLoginPage() {
         loginPage.openPage();
     }
@@ -44,17 +52,16 @@ public class webStepdef {
     @Then("user should see error message")
     public void validateError() {
         assertTrue(loginPage.isErrorDisplayed());
-        System.out.println("Error Message: " + loginPage.getErrorMessage());
+        System.out.println("Error: " + loginPage.getErrorMessage());
     }
 
     @Then("user should see error message {string}")
     public void validateErrorMessage(String expectedMsg) {
         String actualMsg = loginPage.getErrorMessage();
-        System.out.println("Actual Error: " + actualMsg);
         assertTrue(actualMsg.contains(expectedMsg));
     }
 
-    @After
+    @After("@web")
     public void tearDown() {
         driverFactory.quitDriver();
     }
