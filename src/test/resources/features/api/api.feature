@@ -36,6 +36,11 @@ Feature: User API CRUD Test
     When user send GET request
     Then user get response status code 200
 
+  Scenario: Get user by invalid ID (negative)
+    Given user set GET API endpoint with invalid user id
+    When user send GET request by invalid id
+    Then user get response status code 400
+
   Scenario: Create new user
     Given user set POST API endpoint
     When user send POST request with valid body

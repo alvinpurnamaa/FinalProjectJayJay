@@ -28,3 +28,18 @@ Feature: Login sauce demo
     And user input password ""
     And user click login button
     Then user should see error message
+
+  Scenario: user successfully checkout product
+    Given user open the login page
+    When user input username "standard_user"
+    And user input password "secret_sauce"
+    And user click login button
+    And user add product to cart
+    And user click cart icon
+    And user click checkout button
+    And user input first name "Alvin"
+    And user input last name "Test"
+    And user input postal code "12345"
+    And user click continue button
+    And user click finish button
+    Then user should see checkout success message
