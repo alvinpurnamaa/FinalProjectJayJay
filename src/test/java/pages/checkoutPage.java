@@ -615,12 +615,112 @@
 //
 
 
+//package pages;
+//
+//import org.openqa.selenium.By;
+//import org.openqa.selenium.WebDriver;
+//import org.openqa.selenium.support.ui.ExpectedConditions;
+//import org.openqa.selenium.support.ui.WebDriverWait;
+//import java.time.Duration;
+//
+//public class checkoutPage {
+//
+//    WebDriver driver;
+//    WebDriverWait wait;
+//
+//    By checkoutButton = By.id("checkout");
+//
+//    By firstName = By.id("first-name");
+//    By lastName = By.id("last-name");
+//    By postalCode = By.id("postal-code");
+//
+//    By continueButton = By.id("continue");
+//    By finishButton = By.id("finish");
+//
+//    By successMessage = By.className("complete-header");
+//    By errorMessage = By.cssSelector("[data-test='error']");
+//
+//    public checkoutPage(WebDriver driver) {
+//        this.driver = driver;
+//        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//    }
+//
+//    // ===============================
+//    // CART → STEP ONE
+//    // ===============================
+//    public void clickCheckout() {
+//
+//        System.out.println("URL BEFORE CHECKOUT: " + driver.getCurrentUrl());
+//
+//        // pastikan ada item di cart
+//        int itemCount = driver.findElements(By.className("cart_item")).size();
+//        if (itemCount == 0) {
+//            throw new RuntimeException("❌ Cart kosong!");
+//        }
+//
+//        wait.until(ExpectedConditions.elementToBeClickable(checkoutButton)).click();
+//
+//        // 🔥 tunggu element muncul (bukan URL)
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(firstName));
+//
+//        System.out.println("MASUK STEP ONE");
+//    }
+//
+//    // ===============================
+//    // INPUT FORM
+//    // ===============================
+//    public void inputFirstName(String fname) {
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(firstName)).sendKeys(fname);
+//    }
+//
+//    public void inputLastName(String lname) {
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(lastName)).sendKeys(lname);
+//    }
+//
+//    public void inputPostalCode(String code) {
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(postalCode)).sendKeys(code);
+//    }
+//
+//    // ===============================
+//    // STEP ONE → STEP TWO
+//    // ===============================
+//    public void clickContinue() {
+//
+//        wait.until(ExpectedConditions.elementToBeClickable(continueButton)).click();
+//
+//        try {
+//            wait.until(ExpectedConditions.visibilityOfElementLocated(finishButton));
+//        } catch (Exception e) {
+//
+//            if (driver.findElements(errorMessage).size() > 0) {
+//                String err = driver.findElement(errorMessage).getText();
+//                throw new RuntimeException("❌ Error form: " + err);
+//            }
+//
+//            throw new RuntimeException("❌ Gagal ke step two");
+//        }
+//    }
+//
+//    // ===============================
+//    // STEP TWO → COMPLETE
+//    // ===============================
+//    public void clickFinish() {
+//        wait.until(ExpectedConditions.elementToBeClickable(finishButton)).click();
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(successMessage));
+//    }
+//
+//    public String getSuccessMessage() {
+//        return driver.findElement(successMessage).getText();
+//    }
+//}
 package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.time.Duration;
 
 public class checkoutPage {
@@ -628,6 +728,9 @@ public class checkoutPage {
     WebDriver driver;
     WebDriverWait wait;
 
+    // ===============================
+    // LOCATOR
+    // ===============================
     By checkoutButton = By.id("checkout");
 
     By firstName = By.id("first-name");
@@ -638,7 +741,6 @@ public class checkoutPage {
     By finishButton = By.id("finish");
 
     By successMessage = By.className("complete-header");
-    By errorMessage = By.cssSelector("[data-test='error']");
 
     public checkoutPage(WebDriver driver) {
         this.driver = driver;
@@ -646,29 +748,17 @@ public class checkoutPage {
     }
 
     // ===============================
-    // CART → STEP ONE
+    // ACTION
     // ===============================
+
     public void clickCheckout() {
+        WebElement btn = wait.until(ExpectedConditions.elementToBeClickable(checkoutButton));
+        btn.click();
 
-        System.out.println("URL BEFORE CHECKOUT: " + driver.getCurrentUrl());
-
-        // pastikan ada item di cart
-        int itemCount = driver.findElements(By.className("cart_item")).size();
-        if (itemCount == 0) {
-            throw new RuntimeException("❌ Cart kosong!");
-        }
-
-        wait.until(ExpectedConditions.elementToBeClickable(checkoutButton)).click();
-
-        // 🔥 tunggu element muncul (bukan URL)
-        wait.until(ExpectedConditions.visibilityOfElementLocated(firstName));
-
-        System.out.println("MASUK STEP ONE");
+        // 🔥 WAJIB: tunggu pindah ke step one
+        wait.until(ExpectedConditions.urlContains("checkout-step-one"));
     }
 
-    // ===============================
-    // INPUT FORM
-    // ===============================
     public void inputFirstName(String fname) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(firstName)).sendKeys(fname);
     }
@@ -681,31 +771,17 @@ public class checkoutPage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(postalCode)).sendKeys(code);
     }
 
-    // ===============================
-    // STEP ONE → STEP TWO
-    // ===============================
     public void clickContinue() {
-
         wait.until(ExpectedConditions.elementToBeClickable(continueButton)).click();
 
-        try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(finishButton));
-        } catch (Exception e) {
-
-            if (driver.findElements(errorMessage).size() > 0) {
-                String err = driver.findElement(errorMessage).getText();
-                throw new RuntimeException("❌ Error form: " + err);
-            }
-
-            throw new RuntimeException("❌ Gagal ke step two");
-        }
+        // 🔥 WAJIB: tunggu pindah ke step two
+        wait.until(ExpectedConditions.urlContains("checkout-step-two"));
     }
 
-    // ===============================
-    // STEP TWO → COMPLETE
-    // ===============================
     public void clickFinish() {
         wait.until(ExpectedConditions.elementToBeClickable(finishButton)).click();
+
+        // tunggu success page
         wait.until(ExpectedConditions.visibilityOfElementLocated(successMessage));
     }
 
@@ -713,3 +789,4 @@ public class checkoutPage {
         return driver.findElement(successMessage).getText();
     }
 }
+
