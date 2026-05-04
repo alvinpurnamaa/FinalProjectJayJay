@@ -271,11 +271,354 @@
 //}
 
 
+//package pages;
+//
+//import org.openqa.selenium.By;
+//import org.openqa.selenium.WebDriver;
+//import org.openqa.selenium.WebElement;
+//import org.openqa.selenium.support.ui.ExpectedConditions;
+//import org.openqa.selenium.support.ui.WebDriverWait;
+//import java.time.Duration;
+//
+//public class checkoutPage {
+//
+//    WebDriver driver;
+//    WebDriverWait wait;
+//
+//    // ===============================
+//    // LOCATOR
+//    // ===============================
+//    By checkoutButton = By.id("checkout");
+//
+//    By firstName = By.id("first-name");
+//    By lastName = By.id("last-name");
+//    By postalCode = By.id("postal-code");
+//
+//    By continueButton = By.id("continue");
+//    By finishButton = By.id("finish");
+//
+//    By successMessage = By.className("complete-header");
+//
+//    // ===============================
+//    // CONSTRUCTOR
+//    // ===============================
+//    public checkoutPage(WebDriver driver) {
+//        this.driver = driver;
+//        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//    }
+//
+//    // ===============================
+//    // STEP: CART → CHECKOUT STEP ONE
+//    // ===============================
+//    public void clickCheckout() {
+//        wait.until(ExpectedConditions.elementToBeClickable(checkoutButton)).click();
+//
+//        // pastikan sudah masuk step-one
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(firstName));
+//    }
+//
+//    // ===============================
+//    // INPUT FIELD (VALIDATED)
+//    // ===============================
+//    private void fillField(By locator, String value) {
+//        WebElement el = wait.until(ExpectedConditions.elementToBeClickable(locator));
+//
+//        el.clear();
+//        el.sendKeys(value);
+//
+//        // 🔥 pastikan value benar-benar masuk
+//        wait.until(driver -> el.getAttribute("value").equals(value));
+//    }
+//
+//    public void inputFirstName(String fname) {
+//        fillField(firstName, fname);
+//    }
+//
+//    public void inputLastName(String lname) {
+//        fillField(lastName, lname);
+//    }
+//
+//    public void inputPostalCode(String code) {
+//        fillField(postalCode, code);
+//    }
+//
+//    // ===============================
+//    // STEP ONE → STEP TWO
+//    // ===============================
+//    public void clickContinue() {
+//        wait.until(ExpectedConditions.elementToBeClickable(continueButton)).click();
+//
+//        // 🔥 tunggu sampai finish muncul (indikasi step-two)
+//        wait.until(driver ->
+//                driver.findElements(finishButton).size() > 0
+//        );
+//    }
+//
+//    // ===============================
+//    // STEP TWO → COMPLETE
+//    // ===============================
+//    public void clickFinish() {
+//        wait.until(ExpectedConditions.elementToBeClickable(finishButton)).click();
+//    }
+//
+//    // ===============================
+//    // VALIDATION
+//    // ===============================
+//    public String getSuccessMessage() {
+//        return wait.until(
+//                ExpectedConditions.visibilityOfElementLocated(successMessage)
+//        ).getText();
+//    }
+//}
+//
+
+//
+//
+//package pages;
+//
+//import org.openqa.selenium.By;
+//import org.openqa.selenium.WebDriver;
+//import org.openqa.selenium.WebElement;
+//import org.openqa.selenium.support.ui.ExpectedConditions;
+//import org.openqa.selenium.support.ui.WebDriverWait;
+//
+//import java.time.Duration;
+//
+//public class checkoutPage {
+//
+//    WebDriver driver;
+//    WebDriverWait wait;
+//
+//    // ===============================
+//    // LOCATORS
+//    // ===============================
+//    By checkoutButton = By.id("checkout");
+//
+//    By firstName = By.id("first-name");
+//    By lastName = By.id("last-name");
+//    By postalCode = By.id("postal-code");
+//
+//    By continueButton = By.id("continue");
+//    By finishButton = By.id("finish");
+//
+//    By successMessage = By.className("complete-header");
+//
+//    // ===============================
+//    // CONSTRUCTOR
+//    // ===============================
+//    public checkoutPage(WebDriver driver) {
+//        this.driver = driver;
+//        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//    }
+//
+//    // ===============================
+//    // HELPER
+//    // ===============================
+//    private void waitForUrlContains(String text) {
+//        wait.until(driver -> driver.getCurrentUrl().contains(text));
+//    }
+//
+//    private void fillField(By locator, String value) {
+//        WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+//        el.clear();
+//        el.sendKeys(value);
+//    }
+//
+//    private void ensureOnStepOne() {
+//        waitForUrlContains("checkout-step-one");
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(firstName));
+//    }
+//
+//    private void ensureOnStepTwo() {
+//        waitForUrlContains("checkout-step-two");
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(finishButton));
+//    }
+//
+//    // ===============================
+//    // ACTIONS
+//    // ===============================
+//
+//    // CART → STEP ONE
+//    public void clickCheckout() {
+//        waitForUrlContains("cart.html");
+//
+//        wait.until(ExpectedConditions.elementToBeClickable(checkoutButton)).click();
+//
+//        ensureOnStepOne();
+//    }
+//
+//    // INPUT FORM
+//    public void inputFirstName(String fname) {
+//        ensureOnStepOne();
+//        fillField(firstName, fname);
+//    }
+//
+//    public void inputLastName(String lname) {
+//        ensureOnStepOne();
+//        fillField(lastName, lname);
+//    }
+//
+//    public void inputPostalCode(String code) {
+//        ensureOnStepOne();
+//        fillField(postalCode, code);
+//    }
+//
+//    // STEP ONE → STEP TWO
+//    public void clickContinue() {
+//        ensureOnStepOne();
+//
+//        wait.until(ExpectedConditions.elementToBeClickable(continueButton)).click();
+//
+//        ensureOnStepTwo();
+//    }
+//
+//    // STEP TWO → COMPLETE
+//    public void clickFinish() {
+//        ensureOnStepTwo();
+//
+//        wait.until(ExpectedConditions.elementToBeClickable(finishButton)).click();
+//
+//        waitForUrlContains("checkout-complete");
+//    }
+//
+//    // ===============================
+//    // VALIDATION
+//    // ===============================
+//    public String getSuccessMessage() {
+//        return wait.until(
+//                ExpectedConditions.visibilityOfElementLocated(successMessage)
+//        ).getText();
+//    }
+//}
+
+
+
+
+//package pages;
+//
+//import org.openqa.selenium.By;
+//import org.openqa.selenium.WebDriver;
+//import org.openqa.selenium.support.ui.ExpectedConditions;
+//import org.openqa.selenium.support.ui.WebDriverWait;
+//
+//import java.time.Duration;
+//
+//public class checkoutPage {
+//
+//    WebDriver driver;
+//    WebDriverWait wait;
+//
+//    // ===============================
+//    // LOCATORS
+//    // ===============================
+//    By checkoutButton = By.id("checkout");
+//
+//    By firstName = By.id("first-name");
+//    By lastName = By.id("last-name");
+//    By postalCode = By.id("postal-code");
+//
+//    By continueButton = By.id("continue");
+//    By finishButton = By.id("finish");
+//
+//    By successMessage = By.className("complete-header");
+//    By errorMessage = By.cssSelector("[data-test='error']");
+//
+//    // ===============================
+//    // CONSTRUCTOR
+//    // ===============================
+//    public checkoutPage(WebDriver driver) {
+//        this.driver = driver;
+//        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//    }
+//
+//    // ===============================
+//    // STEP: CART → CHECKOUT STEP ONE
+//    // ===============================
+//    public void clickCheckout() {
+//
+//        // pastikan kita di cart page
+//        wait.until(driver -> driver.getCurrentUrl().contains("cart.html"));
+//
+//        System.out.println("BEFORE CHECKOUT: " + driver.getCurrentUrl());
+//
+//        wait.until(ExpectedConditions.elementToBeClickable(checkoutButton)).click();
+//
+//        // tunggu pindah ke step one
+//        wait.until(driver -> driver.getCurrentUrl().contains("checkout-step-one"));
+//
+//        System.out.println("AFTER CHECKOUT: " + driver.getCurrentUrl());
+//
+//        // pastikan field muncul
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(firstName));
+//    }
+//
+//    // ===============================
+//    // INPUT FORM
+//    // ===============================
+//    public void inputFirstName(String fname) {
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(firstName)).sendKeys(fname);
+//    }
+//
+//    public void inputLastName(String lname) {
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(lastName)).sendKeys(lname);
+//    }
+//
+//    public void inputPostalCode(String code) {
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(postalCode)).sendKeys(code);
+//    }
+//
+//    // ===============================
+//    // STEP ONE → STEP TWO
+//    // ===============================
+//    public void clickContinue() {
+//
+//        wait.until(ExpectedConditions.elementToBeClickable(continueButton)).click();
+//
+//        try {
+//            // tunggu pindah ke step two
+//            wait.until(driver -> driver.getCurrentUrl().contains("checkout-step-two"));
+//
+//            // validasi tombol finish muncul
+//            wait.until(ExpectedConditions.visibilityOfElementLocated(finishButton));
+//
+//        } catch (Exception e) {
+//
+//            // kalau gagal, cek error message
+//            if (driver.findElements(errorMessage).size() > 0) {
+//                String error = driver.findElement(errorMessage).getText();
+//                throw new RuntimeException("❌ Checkout gagal: " + error);
+//            }
+//
+//            throw new RuntimeException("❌ Gagal ke checkout step two");
+//        }
+//    }
+//
+//    // ===============================
+//    // STEP TWO → COMPLETE
+//    // ===============================
+//    public void clickFinish() {
+//
+//        wait.until(ExpectedConditions.elementToBeClickable(finishButton)).click();
+//
+//        wait.until(driver -> driver.getCurrentUrl().contains("checkout-complete"));
+//
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(successMessage));
+//    }
+//
+//    // ===============================
+//    // VALIDATION
+//    // ===============================
+//    public String getSuccessMessage() {
+//        return wait.until(ExpectedConditions.visibilityOfElementLocated(successMessage)).getText();
+//    }
+//}
+//
+
+
 package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
@@ -285,9 +628,6 @@ public class checkoutPage {
     WebDriver driver;
     WebDriverWait wait;
 
-    // ===============================
-    // LOCATOR
-    // ===============================
     By checkoutButton = By.id("checkout");
 
     By firstName = By.id("first-name");
@@ -298,60 +638,67 @@ public class checkoutPage {
     By finishButton = By.id("finish");
 
     By successMessage = By.className("complete-header");
+    By errorMessage = By.cssSelector("[data-test='error']");
 
-    // ===============================
-    // CONSTRUCTOR
-    // ===============================
     public checkoutPage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // ===============================
-    // STEP: CART → CHECKOUT STEP ONE
+    // CART → STEP ONE
     // ===============================
     public void clickCheckout() {
+
+        System.out.println("URL BEFORE CHECKOUT: " + driver.getCurrentUrl());
+
+        // pastikan ada item di cart
+        int itemCount = driver.findElements(By.className("cart_item")).size();
+        if (itemCount == 0) {
+            throw new RuntimeException("❌ Cart kosong!");
+        }
+
         wait.until(ExpectedConditions.elementToBeClickable(checkoutButton)).click();
 
-        // pastikan sudah masuk step-one
+        // 🔥 tunggu element muncul (bukan URL)
         wait.until(ExpectedConditions.visibilityOfElementLocated(firstName));
+
+        System.out.println("MASUK STEP ONE");
     }
 
     // ===============================
-    // INPUT FIELD (VALIDATED)
+    // INPUT FORM
     // ===============================
-    private void fillField(By locator, String value) {
-        WebElement el = wait.until(ExpectedConditions.elementToBeClickable(locator));
-
-        el.clear();
-        el.sendKeys(value);
-
-        // 🔥 pastikan value benar-benar masuk
-        wait.until(driver -> el.getAttribute("value").equals(value));
-    }
-
     public void inputFirstName(String fname) {
-        fillField(firstName, fname);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(firstName)).sendKeys(fname);
     }
 
     public void inputLastName(String lname) {
-        fillField(lastName, lname);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(lastName)).sendKeys(lname);
     }
 
     public void inputPostalCode(String code) {
-        fillField(postalCode, code);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(postalCode)).sendKeys(code);
     }
 
     // ===============================
     // STEP ONE → STEP TWO
     // ===============================
     public void clickContinue() {
+
         wait.until(ExpectedConditions.elementToBeClickable(continueButton)).click();
 
-        // 🔥 tunggu sampai finish muncul (indikasi step-two)
-        wait.until(driver ->
-                driver.findElements(finishButton).size() > 0
-        );
+        try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(finishButton));
+        } catch (Exception e) {
+
+            if (driver.findElements(errorMessage).size() > 0) {
+                String err = driver.findElement(errorMessage).getText();
+                throw new RuntimeException("❌ Error form: " + err);
+            }
+
+            throw new RuntimeException("❌ Gagal ke step two");
+        }
     }
 
     // ===============================
@@ -359,17 +706,10 @@ public class checkoutPage {
     // ===============================
     public void clickFinish() {
         wait.until(ExpectedConditions.elementToBeClickable(finishButton)).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(successMessage));
     }
 
-    // ===============================
-    // VALIDATION
-    // ===============================
     public String getSuccessMessage() {
-        return wait.until(
-                ExpectedConditions.visibilityOfElementLocated(successMessage)
-        ).getText();
+        return driver.findElement(successMessage).getText();
     }
 }
-
-
-

@@ -17,14 +17,14 @@ public class webStepdef {
 
     WebDriver driver;
     loginPage loginPage;
-    homePage inventoryPage;
+    homePage homePage;
     checkoutPage checkoutPage;
 
     @Before("@web")
     public void setUp() {
         driver = driverFactory.getDriver();
         loginPage = new loginPage(driver);
-        inventoryPage = new homePage(driver);
+        homePage = new homePage(driver);
         checkoutPage = new checkoutPage(driver);
     }
 
@@ -51,7 +51,7 @@ public class webStepdef {
 
     @Then("user should be redirected to inventory page")
     public void validateLoginSuccess() {
-        assertTrue(inventoryPage.isOnInventoryPage(), "Login failed!");
+        assertTrue(homePage.isOnInventoryPage(), "Login failed!");
     }
 
     @Then("user should see error message")
@@ -62,14 +62,14 @@ public class webStepdef {
 
     @And("user add product to cart")
     public void addProduct() {
-        inventoryPage.addProductToCart();
+        homePage.addProductToCart();
     }
 
     @And("user click cart icon")
     public void clickCart() {
-        inventoryPage.clickCart();
+        homePage.clickCart();
 
-        assertTrue(inventoryPage.isOnCartPage(), "Not on cart page!");
+        assertTrue(homePage.isOnCartPage(), "Not on cart page!");
     }
 
 
