@@ -4,7 +4,6 @@ import io.cucumber.java.en.*;
 import io.cucumber.java.Before;
 import io.cucumber.java.After;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import pages.loginPage;
@@ -29,6 +28,7 @@ public class webStepdef {
         checkoutPage = new checkoutPage(driver);
     }
 
+
     @Given("user open the login page")
     public void openLoginPage() {
         loginPage.openPage();
@@ -51,17 +51,14 @@ public class webStepdef {
 
     @Then("user should be redirected to inventory page")
     public void validateLoginSuccess() {
-        assertTrue(inventoryPage.isOnInventoryPage());
+        assertTrue(inventoryPage.isOnInventoryPage(), "Login failed!");
     }
 
     @Then("user should see error message")
     public void validateError() {
-        assertTrue(loginPage.isErrorDisplayed());
+        assertTrue(loginPage.isErrorDisplayed(), "Error message not displayed!");
     }
 
-    // ===============================
-    // ✅ ADD TO CART
-    // ===============================
 
     @And("user add product to cart")
     public void addProduct() {
@@ -71,15 +68,15 @@ public class webStepdef {
     @And("user click cart icon")
     public void clickCart() {
         inventoryPage.clickCart();
+
+        assertTrue(inventoryPage.isOnCartPage(), "Not on cart page!");
     }
 
-    // ===============================
-    // ✅ CHECKOUT FLOW
-    // ===============================
 
     @And("user click checkout button")
     public void clickCheckout() {
         checkoutPage.clickCheckout();
+        System.out.println("URL after checkout: " + driver.getCurrentUrl());
     }
 
     @And("user input first name {string}")
@@ -100,17 +97,19 @@ public class webStepdef {
     @And("user click continue button")
     public void clickContinue() {
         checkoutPage.clickContinue();
+        System.out.println("URL after continue: " + driver.getCurrentUrl());
     }
 
     @And("user click finish button")
     public void clickFinish() {
+        System.out.println("URL before finish: " + driver.getCurrentUrl());
         checkoutPage.clickFinish();
     }
 
     @Then("user should see checkout success message")
     public void validateCheckoutSuccess() {
         String actual = checkoutPage.getSuccessMessage();
-        assertEquals("Thank you for your order!", actual);
+        assertEquals("Thank you for your order!", actual, "Checkout failed!");
     }
 
     @After("@web")
